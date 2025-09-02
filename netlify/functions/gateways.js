@@ -12,7 +12,7 @@ exports.handler = async (event, context) => {
         const { httpMethod } = event;
         const body = parseBody(event);
         const cfg = getConfig();
-        const paymentGateway = new PaymentGateway(cfg.ACTIVE_GATEWAY);
+        const paymentGateway = new PaymentGateway(cfg.gateway);
 
         switch (httpMethod) {
             case 'GET':
