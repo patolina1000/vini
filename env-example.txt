@@ -1,0 +1,37 @@
+# ========================================
+# VARIÁVEIS DE AMBIENTE - EXEMPLO
+# ========================================
+# 
+# Copie este arquivo para .env e configure com seus valores reais
+# Para deploy na Netlify, configure estas variáveis no painel de controle
+
+# ===== CONFIGURAÇÕES GERAIS =====
+ENVIRONMENT=production
+NODE_ENV=production
+
+# ===== CONFIGURAÇÕES SYNCPAY =====
+SYNCPAY_CLIENT_ID=seu_client_id_aqui
+SYNCPAY_CLIENT_SECRET=seu_client_secret_aqui
+
+# ===== CONFIGURAÇÕES PUSHINPAY =====
+PUSHINPAY_TOKEN=seu_token_aqui
+PUSHINPAY_ENVIRONMENT=production
+
+# ===== CONFIGURAÇÕES DE WEBHOOK =====
+WEBHOOK_SECRET=seu_webhook_secret_aqui
+
+# ===== CONFIGURAÇÕES DE REDIRECIONAMENTO =====
+REDIRECT_URL=https://seu-site.com/success
+
+# ===== CONFIGURAÇÕES DE GATEWAY =====
+ACTIVE_GATEWAY=syncpay
+
+# ===== CONFIGURAÇÕES DE QR CODE =====
+GENERATE_QR_CODE_ON_MOBILE=true
+
+# ===== CONFIGURAÇÕES DE MODELO =====
+MODEL=standard
+
+# ===== CONFIGURAÇÕES DE PLANOS =====
+# Os planos são configurados no arquivo de configuração
+# mas podem ser sobrescritos aqui se necessário
