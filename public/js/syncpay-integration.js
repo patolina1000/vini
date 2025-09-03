@@ -6,6 +6,23 @@
 (function() {
     'use strict';
 
+    async function handleResponse(response, friendlyMessage = 'Erro na requisição') {
+        if (!response.ok) {
+            let errorText = '';
+            try {
+                errorText = await response.text();
+            } catch (e) {}
+            console.error(friendlyMessage + ':', errorText);
+            throw new Error(friendlyMessage);
+        }
+        try {
+            return await response.json();
+        } catch (err) {
+            console.error('Erro ao interpretar resposta JSON:', err);
+            throw new Error('Resposta inválida do servidor');
+        }
+    }
+
     // Configuração da API
     const API_CONFIG = {
         baseUrl: 'https://api.syncpayments.com.br/api/partner/v1',
@@ -65,12 +82,7 @@
 
             console.log('📥 Resposta recebida:', response.status, response.statusText);
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(`HTTP ${response.status}: ${errorData.message || response.statusText}`);
-            }
-
-            const data = await response.json();
+            const data = await handleResponse(response, 'Erro na autenticação com a API');
             console.log('✅ Autenticação bem-sucedida:', data);
 
             // Armazenar token em memória
@@ -135,12 +147,7 @@
 
             console.log('📥 Resposta do saldo:', response.status, response.statusText);
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
-            }
-
-            const data = await response.json();
+            const data = await handleResponse(response, 'Erro ao consultar saldo');
             console.log('✅ Saldo consultado:', data);
 
             return data;
@@ -230,12 +237,7 @@
 
             console.log('📥 Resposta do cash-in:', response.status, response.statusText);
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
-            }
-
-            const data = await response.json();
+            const data = await handleResponse(response, 'Erro ao criar cash-in');
             console.log('✅ Cash-in criado com sucesso:', data);
 
             return data;
@@ -267,12 +269,7 @@
 
             console.log('📥 Resposta do status:', response.status, response.statusText);
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
-            }
-
-            const data = await response.json();
+            const data = await handleResponse(response, 'Erro ao consultar status da transação');
             console.log('✅ Status da transação consultado:', data);
 
             return data;
@@ -340,12 +337,7 @@
 
             console.log('📥 Resposta do cash-out:', response.status, response.statusText);
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
-            }
-
-            const data = await response.json();
+            const data = await handleResponse(response, 'Erro ao criar cash-out');
             console.log('✅ Cash-out criado com sucesso:', data);
 
             return data;
@@ -375,12 +367,7 @@
 
             console.log('📥 Resposta do perfil:', response.status, response.statusText);
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
-            }
-
-            const data = await response.json();
+            const data = await handleResponse(response, 'Erro ao consultar dados do parceiro');
             console.log('✅ Dados do parceiro consultados:', data);
 
             return data;
@@ -424,12 +411,7 @@
 
             console.log('📥 Resposta da listagem de webhooks:', response.status, response.statusText);
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
-            }
-
-            const data = await response.json();
+            const data = await handleResponse(response, 'Erro ao listar webhooks');
             console.log('✅ Webhooks listados:', data);
 
             return data;
@@ -479,12 +461,7 @@
 
             console.log('📥 Resposta da criação do webhook:', response.status, response.statusText);
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
-            }
-
-            const data = await response.json();
+            const data = await handleResponse(response, 'Erro ao criar webhook');
             console.log('✅ Webhook criado com sucesso:', data);
 
             return data;
@@ -538,12 +515,7 @@
 
             console.log('📥 Resposta da atualização do webhook:', response.status, response.statusText);
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
-            }
-
-            const data = await response.json();
+            const data = await handleResponse(response, 'Erro ao atualizar webhook');
             console.log('✅ Webhook atualizado com sucesso:', data);
 
             return data;
@@ -577,12 +549,7 @@
 
             console.log('📥 Resposta da exclusão do webhook:', response.status, response.statusText);
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
-            }
-
-            const data = await response.json();
+            const data = await handleResponse(response, 'Erro ao deletar webhook');
             console.log('✅ Webhook deletado com sucesso:', data);
 
             return data;

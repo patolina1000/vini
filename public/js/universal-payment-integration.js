@@ -22,7 +22,17 @@
         async loadCurrentGateway() {
             try {
                 const response = await fetch('/api/gateways/current');
-                const data = await response.json();
+                if (!response.ok) {
+                    console.error('Erro ao carregar gateway atual: resposta inválida');
+                    return;
+                }
+                let data;
+                try {
+                    data = await response.json();
+                } catch (err) {
+                    console.error('Erro ao processar gateway atual:', err);
+                    return;
+                }
                 if (data.success) {
                     this.currentGateway = data.gateway;
                     console.log(`🎯 Gateway atual carregado: ${this.currentGateway}`);
@@ -76,11 +86,22 @@
                 console.log('📥 Resposta recebida:', response.status, response.statusText);
 
                 if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(`HTTP ${response.status}: ${errorData.message || response.statusText}`);
+                    let message = 'Erro ao criar transação';
+                    try {
+                        const errorData = await response.json();
+                        message = errorData.message || message;
+                    } catch (e) {
+                        // ignore parse error
+                    }
+                    throw new Error(message);
                 }
 
-                const data = await response.json();
+                let data;
+                try {
+                    data = await response.json();
+                } catch (err) {
+                    throw new Error('Resposta inválida do servidor');
+                }
                 console.log(`✅ Transação PIX criada via ${data.gateway.toUpperCase()}:`, data);
 
                 // Retornar dados padronizados independente do gateway
@@ -102,10 +123,18 @@
         async getPaymentStatus(paymentId) {
             try {
                 console.log(`🔍 Consultando status via ${this.currentGateway.toUpperCase()}...`);
-                
+
                 const response = await fetch(`/api/payments/${paymentId}/status`);
-                const data = await response.json();
-                
+                if (!response.ok) {
+                    throw new Error('Erro ao consultar status do pagamento');
+                }
+                let data;
+                try {
+                    data = await response.json();
+                } catch (err) {
+                    throw new Error('Resposta inválida do servidor');
+                }
+
                 if (data.success) {
                     return data.data;
                 } else {

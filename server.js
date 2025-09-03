@@ -150,7 +150,13 @@ app.post('/api/auth-token', async (req, res) => {
                 });
             }
 
-            const data = await response.json();
+            let data;
+            try {
+                data = await response.json();
+            } catch (err) {
+                console.error('[Auth] Erro ao interpretar resposta JSON:', err);
+                return res.status(500).json({ message: 'Resposta inválida da API SyncPayments' });
+            }
             // console.log('✅ [DEBUG] Token gerado com sucesso');
             // console.log('📋 [DEBUG] Resposta da API:', JSON.stringify(data, null, 2));
             
@@ -207,7 +213,13 @@ app.post('/api/auth-token', async (req, res) => {
             });
         }
 
-        const data = await response.json();
+        let data;
+        try {
+            data = await response.json();
+        } catch (err) {
+            console.error('[Auth] Erro ao interpretar resposta JSON:', err);
+            return res.status(500).json({ message: 'Resposta inválida da API SyncPayments' });
+        }
         // console.log('✅ [DEBUG] Token gerado com sucesso');
         // console.log('📋 [DEBUG] Resposta da API:', JSON.stringify(data, null, 2));
         

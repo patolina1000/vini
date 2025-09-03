@@ -1,7 +1,18 @@
 (async function(){
   try {
     const res = await fetch('/api/config');
-    const cfg = await res.json();
+    if (!res.ok) {
+      alert('Erro ao carregar configurações iniciais');
+      return;
+    }
+    let cfg;
+    try {
+      cfg = await res.json();
+    } catch (err) {
+      console.error('Erro ao processar configurações', err);
+      alert('Resposta inválida do servidor de configurações');
+      return;
+    }
     window.APP_CONFIG = cfg;
     window.SYNCPAY_CONFIG = window.SYNCPAY_CONFIG || {};
     window.SYNCPAY_CONFIG.client_id = cfg.syncpay?.clientId;
@@ -25,5 +36,6 @@
     }
   } catch (err) {
     console.error('Erro ao carregar configurações', err);
+    alert('Erro ao carregar configurações');
   }
 })();

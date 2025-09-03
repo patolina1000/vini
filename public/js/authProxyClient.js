@@ -56,16 +56,27 @@
             },
             body: JSON.stringify(authData)
         })
-        .then(response => {
+        .then(async response => {
             console.log('📥 Resposta recebida:', response.status, response.statusText);
-            
+
             if (!response.ok) {
-                return response.json().then(errorData => {
-                    throw new Error(`HTTP ${response.status}: ${errorData.message || response.statusText}`);
-                });
+                let message = 'Erro na autenticação';
+                try {
+                    const errorData = await response.json();
+                    if (errorData && errorData.message) {
+                        message = errorData.message;
+                    }
+                } catch (e) {
+                    // ignore parse error
+                }
+                throw new Error(message);
             }
-            
-            return response.json();
+
+            try {
+                return await response.json();
+            } catch (err) {
+                throw new Error('Resposta inválida do servidor');
+            }
         })
         .then(data => {
             console.log('✅ Autenticação bem-sucedida:', data);
@@ -84,7 +95,7 @@
         })
         .catch(error => {
             console.error('❌ Erro na autenticação:', error);
-            alert('❌ ERRO na autenticação:\n\n' + error.message);
+            alert('❌ Erro na autenticação: ' + (error.message || 'Falha ao processar requisição'));
         })
         .finally(() => {
             isAuthenticating = false; // Reset da flag
