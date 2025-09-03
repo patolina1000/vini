@@ -1,5 +1,4 @@
 const axios = require('axios');
-const { getConfig } = require('./loadConfig');
 
 let tokenCache = { access_token: null, expires_at: null };
 
@@ -16,10 +15,9 @@ async function getToken() {
   try {
     console.log('🔐 [authService] Obtendo novo token...');
 
-    const cfg = getConfig();
     const authData = {
-      client_id: cfg.syncpay?.clientId || '',
-      client_secret: cfg.syncpay?.clientSecret || '',
+      client_id: process.env.SYNCPAY_CLIENT_ID || '',
+      client_secret: process.env.SYNCPAY_CLIENT_SECRET || '',
       '01K1259MAXE0TNRXV2C2WQN2MV': 'auth_service_' + Date.now()
     };
 

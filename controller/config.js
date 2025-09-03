@@ -31,8 +31,8 @@ const ENVIRONMENT = dynamic.environment || 'production';
 // CONFIGURAÇÕES SYNCPAY
 // ============================
 const SYNCPAY_CONFIG = {
-    CLIENT_ID: dynamic.syncpay?.clientId || '',
-    CLIENT_SECRET: dynamic.syncpay?.clientSecret || '',
+    CLIENT_ID: process.env.SYNCPAY_CLIENT_ID || '',
+    CLIENT_SECRET: process.env.SYNCPAY_CLIENT_SECRET || '',
     API_BASE_URL: 'https://api.syncpayments.com.br/api/partner/v1',
     AUTH_URL: 'https://api.syncpayments.com.br/api/partner/v1/auth-token',
     TIMEOUT: 30000,
@@ -43,7 +43,7 @@ const SYNCPAY_CONFIG = {
 // CONFIGURAÇÕES PUSHINPAY
 // ============================
 const PUSHINPAY_CONFIG = {
-    TOKEN: dynamic.pushinpay?.token || '',
+    TOKEN: process.env.PUSHINPAY_TOKEN || '',
     API_BASE_URL_PROD: 'https://api.pushinpay.com.br',
     API_BASE_URL_SANDBOX: 'https://api-sandbox.pushinpay.com.br',
     TIMEOUT: 30000,
@@ -70,7 +70,7 @@ const WEBHOOK_CONFIG = {
 
     // Configurações de segurança
     VALIDATE_SIGNATURE: true,
-    SECRET_KEY: dynamic.webhook?.secret || 'sua-chave-secreta-aqui'
+    SECRET_KEY: process.env.WEBHOOK_SECRET || ''
 };
 
 // ============================

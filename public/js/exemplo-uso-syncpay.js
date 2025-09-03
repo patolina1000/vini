@@ -193,7 +193,7 @@
                     phone: '11987654321'
                 },
                 split: [
-                    { percentage: 100, user_id: '708ddc0b-357d-4548-b158-615684caa616' }
+                    { percentage: 100, user_id: 'SEU_CLIENT_ID_SYNCPAY_AQUI' }
                 ]
             };
             
@@ -276,7 +276,7 @@
                     phone: '11876543210'
                 },
                 split: [
-                    { percentage: 100, user_id: '708ddc0b-357d-4548-b158-615684caa616' }
+                    { percentage: 100, user_id: 'SEU_CLIENT_ID_SYNCPAY_AQUI' }
                 ]
             };
             

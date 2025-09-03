@@ -49,21 +49,8 @@
             return authToken;
         }
 
-        // Validar configuração
-        if (!window.SYNCPAY_CONFIG) {
-            throw new Error('Configuração SYNCPAY_CONFIG não encontrada');
-        }
-
-        const { client_id, client_secret } = window.SYNCPAY_CONFIG;
-
-        if (!client_id || !client_secret) {
-            throw new Error('client_id ou client_secret não configurados');
-        }
-
-        // Preparar dados da requisição
+        // Preparar dados da requisição (credenciais são injetadas no backend)
         const authData = {
-            client_id: client_id,
-            client_secret: client_secret,
             '01K1259MAXE0TNRXV2C2WQN2MV': 'auth_request_' + Date.now()
         };
 
@@ -612,7 +599,7 @@
                     phone: '11987654321'
                 },
                 split: [
-                    { percentage: 100, user_id: '708ddc0b-357d-4548-b158-615684caa616' }
+                    { percentage: 100, user_id: 'SEU_CLIENT_ID_SYNCPAY_AQUI' }
                 ]
             };
 
