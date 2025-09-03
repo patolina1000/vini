@@ -83,18 +83,17 @@ app.post('/api/auth-token', async (req, res) => {
         const extraField = req.body['01K1259MAXE0TNRXV2C2WQN2MV'] || 'valor';
         
         // Verificar se as credenciais estão disponíveis
-        const cfg = getConfig();
-        const clientId = cfg.syncpay?.clientId;
-        const clientSecret = cfg.syncpay?.clientSecret;
+        const clientId = process.env.SYNCPAY_CLIENT_ID;
+        const clientSecret = process.env.SYNCPAY_CLIENT_SECRET;
 
         if (!clientId || !clientSecret) {
             console.error('[Auth] Credenciais não configuradas');
             return res.status(500).json({
                 message: 'Credenciais da API não configuradas',
-                error: 'syncpay.clientId ou syncpay.clientSecret não definidos'
+                error: 'SYNCPAY_CLIENT_ID ou SYNCPAY_CLIENT_SECRET não definidos'
             });
         }
-        
+
         const authData = {
             client_id: clientId,
             client_secret: clientSecret,
@@ -471,10 +470,10 @@ app.get('/api/gateways/test', (req, res) => {
             current_gateway: currentGateway,
             gateways: gateways,
             config_status: {
-                pushinpay_token: cfg.pushinpay?.token ? 'Configurado' : 'Não configurado',
-                pushinpay_environment: cfg.environment || 'production',
-                syncpay_client_id: cfg.syncpay?.clientId ? 'Configurado' : 'Não configurado',
-                syncpay_client_secret: cfg.syncpay?.clientSecret ? 'Configurado' : 'Não configurado'
+                pushinpay_token: process.env.PUSHINPAY_TOKEN ? 'Configurado' : 'Não configurado',
+                pushinpay_environment: process.env.PUSHINPAY_ENVIRONMENT || cfg.environment || 'production',
+                syncpay_client_id: process.env.SYNCPAY_CLIENT_ID ? 'Configurado' : 'Não configurado',
+                syncpay_client_secret: process.env.SYNCPAY_CLIENT_SECRET ? 'Configurado' : 'Não configurado'
             }
         });
     } catch (error) {

@@ -108,8 +108,8 @@ const GENERAL_CONFIG = {
  * 
  * const ACTIVE_GATEWAY = 'syncpay';
  * const SYNCPAY_CONFIG = {
- *     CLIENT_ID: '708ddc0b-357d-4548-b158-615684caa616',
- *     CLIENT_SECRET: 'c08d40e5-3049-48c9-85c0-fd3cc6ca502c',
+ *     CLIENT_ID: 'SEU_CLIENT_ID_SYNCPAY_AQUI',
+ *     CLIENT_SECRET: 'SEU_CLIENT_SECRET_SYNCPAY_AQUI',
  *     // ... outras configurações
  * };
  */
@@ -119,7 +119,7 @@ const GENERAL_CONFIG = {
  * 
  * const ACTIVE_GATEWAY = 'pushinpay';
  * const PUSHINPAY_CONFIG = {
- *     TOKEN: '36250|MPvURHE0gE6lqsPN0PtwDOUVISoLjSyvqYUvuDPi47f09b29',
+ *     TOKEN: 'SEU_TOKEN_PUSHINPAY_AQUI',
  *     // ... outras configurações
  * };
  */

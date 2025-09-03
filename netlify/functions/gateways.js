@@ -26,16 +26,16 @@ exports.handler = async (event, context) => {
                     // Testar configuração dos gateways
                     const gateways = paymentGateway.getAvailableGateways();
                     const currentGateway = paymentGateway.getCurrentGateway();
-                    
+
                     return successResponse({
                         message: 'Configuração dos gateways',
                         current_gateway: currentGateway,
                         gateways: gateways,
                         config_status: {
-                            pushinpay_token: cfg.pushinpay?.token ? 'Configurado' : 'Não configurado',
-                            pushinpay_environment: cfg.environment || 'production',
-                            syncpay_client_id: cfg.syncpay?.clientId ? 'Configurado' : 'Não configurado',
-                            syncpay_client_secret: cfg.syncpay?.clientSecret ? 'Configurado' : 'Não configurado'
+                            pushinpay_token: process.env.PUSHINPAY_TOKEN ? 'Configurado' : 'Não configurado',
+                            pushinpay_environment: process.env.PUSHINPAY_ENVIRONMENT || cfg.environment || 'production',
+                            syncpay_client_id: process.env.SYNCPAY_CLIENT_ID ? 'Configurado' : 'Não configurado',
+                            syncpay_client_secret: process.env.SYNCPAY_CLIENT_SECRET ? 'Configurado' : 'Não configurado'
                         }
                     });
                 } else {

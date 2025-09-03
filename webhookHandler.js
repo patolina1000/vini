@@ -10,7 +10,7 @@ const { getConfig } = require('./loadConfig');
 class WebhookHandler {
     constructor() {
         const cfg = getConfig();
-        this.webhookSecret = cfg.webhook?.secret || 'default_secret';
+        this.webhookSecret = process.env.WEBHOOK_SECRET || cfg.webhook?.secret || 'default_secret';
     }
 
     /**

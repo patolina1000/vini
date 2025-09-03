@@ -15,8 +15,6 @@
     }
     window.APP_CONFIG = cfg;
     window.SYNCPAY_CONFIG = window.SYNCPAY_CONFIG || {};
-    window.SYNCPAY_CONFIG.client_id = cfg.syncpay?.clientId;
-    window.SYNCPAY_CONFIG.client_secret = cfg.syncpay?.clientSecret;
     window.SYNCPAY_CONFIG.plans = cfg.plans || {};
     window.PUSHINPAY_CONFIG = cfg.pushinpay || {};
 

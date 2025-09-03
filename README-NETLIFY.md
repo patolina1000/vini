@@ -59,6 +59,15 @@ ENVIRONMENT=production
 WEBHOOK_SECRET=seu_webhook_secret
 ```
 
+**Descrição das chaves:**
+
+- `SYNCPAY_CLIENT_ID` – ID do cliente fornecido pela SyncPay.
+- `SYNCPAY_CLIENT_SECRET` – segredo utilizado na autenticação SyncPay.
+- `PUSHINPAY_TOKEN` – token de acesso à API PushinPay.
+- `PUSHINPAY_ENVIRONMENT` – ambiente da PushinPay (`production` ou `sandbox`).
+- `ENVIRONMENT` – ambiente geral da aplicação.
+- `WEBHOOK_SECRET` – chave para validar chamadas de webhook.
+
 ### 3. Deploy via Git (Recomendado)
 
 1. Conecte seu repositório Git à Netlify

@@ -1,4 +1,4 @@
-const { getConfig, successResponse, errorResponse, corsResponse, isOptionsRequest, parseBody, fetchWithTimeout } = require('./utils');
+const { successResponse, errorResponse, corsResponse, isOptionsRequest, parseBody, fetchWithTimeout } = require('./utils');
 
 exports.handler = async (event, context) => {
     // Tratar requisições CORS preflight
@@ -18,15 +18,14 @@ exports.handler = async (event, context) => {
         const extraField = body['01K1259MAXE0TNRXV2C2WQN2MV'] || 'valor';
         
         // Verificar se as credenciais estão disponíveis
-        const cfg = getConfig();
-        const clientId = cfg.syncpay?.clientId;
-        const clientSecret = cfg.syncpay?.clientSecret;
+        const clientId = process.env.SYNCPAY_CLIENT_ID;
+        const clientSecret = process.env.SYNCPAY_CLIENT_SECRET;
 
         if (!clientId || !clientSecret) {
             console.error('[Auth] Credenciais não configuradas');
-            return errorResponse('Credenciais da API não configuradas', 500, 'syncpay.clientId ou syncpay.clientSecret não definidos');
+            return errorResponse('Credenciais da API não configuradas', 500, 'SYNCPAY_CLIENT_ID ou SYNCPAY_CLIENT_SECRET não definidos');
         }
-        
+
         const authData = {
             client_id: clientId,
             client_secret: clientSecret,

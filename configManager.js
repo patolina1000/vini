@@ -18,13 +18,10 @@ async function main() {
   cfg.environment = await ask('Environment (production/sandbox)', cfg.environment);
   const defaultMobileQR = cfg.generateQRCodeOnMobile ? 'true' : 'false';
   cfg.generateQRCodeOnMobile = (await ask('Generate QR Code on mobile? (true/false)', defaultMobileQR)).toLowerCase() === 'true';
-  cfg.syncpay.clientId = await ask('SyncPay Client ID', cfg.syncpay.clientId);
-  cfg.syncpay.clientSecret = await ask('SyncPay Client Secret', cfg.syncpay.clientSecret);
-  cfg.pushinpay.token = await ask('PushinPay Token', cfg.pushinpay.token);
+  // Credenciais sensíveis são definidas via variáveis de ambiente
 
-  cfg.webhook = cfg.webhook || { baseUrl: 'https://seu-dominio.com', secret: 'sua-chave-secreta-aqui' };
+  cfg.webhook = cfg.webhook || { baseUrl: 'https://seu-dominio.com', secret: '' };
   cfg.webhook.baseUrl = await ask('Webhook base URL', cfg.webhook.baseUrl);
-  cfg.webhook.secret = await ask('Webhook secret', cfg.webhook.secret);
 
   cfg.redirectUrl = await ask('Redirect URL', cfg.redirectUrl || 'https://www.youtube.com/watch?v=KWiSv44OYI0&list=RDKWiSv44OYI0&start_radio=1');
 

@@ -60,7 +60,6 @@ function checkConfiguration() {
     if (window.SYNCPAY_CONFIG) {
         console.log('✅ SYNCPAY_CONFIG:', {
             client_id: !!window.SYNCPAY_CONFIG.client_id,
-            client_secret: !!window.SYNCPAY_CONFIG.client_secret,
             plans: !!window.SYNCPAY_CONFIG.plans
         });
         

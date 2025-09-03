@@ -19,29 +19,8 @@
         isAuthenticating = true;
         console.log('🔐 Iniciando autenticação SyncPay...');
 
-        // 1. Validar se as credenciais existem
-        if (!window.SYNCPAY_CONFIG) {
-            alert('❌ ERRO: Configuração SYNCPAY_CONFIG não encontrada!');
-            console.error('SYNCPAY_CONFIG não está definida');
-            isAuthenticating = false;
-            return;
-        }
-
-        const { client_id, client_secret } = window.SYNCPAY_CONFIG;
-
-        if (!client_id || !client_secret) {
-            alert('❌ ERRO: client_id ou client_secret não configurados!\n\nVerifique o arquivo config.js');
-            console.error('Credenciais ausentes:', { client_id: !!client_id, client_secret: !!client_secret });
-            isAuthenticating = false;
-            return;
-        }
-
-        console.log('✅ Credenciais validadas com sucesso');
-
-        // 2. Preparar dados da requisição
+        // 1. Preparar dados da requisição (credenciais são fornecidas pelo backend)
         const authData = {
-            client_id: client_id,
-            client_secret: client_secret,
             '01K1259MAXE0TNRXV2C2WQN2MV': 'auth_request_' + Date.now() // Campo obrigatório com timestamp
         };
 
