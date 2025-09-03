@@ -1,18 +1,29 @@
-const fs = require('fs');
-const path = require('path');
+const NodeCache = require('node-cache');
 
-// Carrega variáveis de ambiente de um arquivo .env, se disponível
-require('dotenv').config();
-
-const configPath = path.join(__dirname, 'app-config.json');
+const store = new NodeCache({ stdTTL: 0, checkperiod: 0 });
+const DEFAULT_CONFIG = {
+  gateway: 'syncpay',
+  environment: 'production',
+  generateQRCodeOnMobile: false,
+  syncpay: {},
+  pushinpay: {},
+  webhook: { baseUrl: 'https://seu-dominio.com', secret: '' },
+  model: { name: '', handle: '', bio: '' },
+  plans: {},
+  redirectUrl: ''
+};
 
 function getConfig() {
-  const data = fs.readFileSync(configPath, 'utf-8');
-  return JSON.parse(data);
+  let cfg = store.get('config');
+  if (!cfg) {
+    cfg = { ...DEFAULT_CONFIG };
+    store.set('config', cfg);
+  }
+  return cfg;
 }
 
 function saveConfig(newConfig) {
-  fs.writeFileSync(configPath, JSON.stringify(newConfig, null, 2));
+  store.set('config', newConfig);
 }
 
-module.exports = { getConfig, saveConfig, configPath };
+module.exports = { getConfig, saveConfig };

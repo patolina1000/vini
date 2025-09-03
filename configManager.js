@@ -37,7 +37,7 @@ async function main() {
   }
 
   saveConfig(cfg);
-  console.log('Configuration saved to app-config.json');
+  console.log('Configuration saved to external storage');
   rl.close();
 }
 

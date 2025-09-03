@@ -22,7 +22,7 @@ const { getConfig } = require('../loadConfig');
 const dynamic = getConfig();
 
 /**
- * Gateway ativo e ambiente definidos em app-config.json
+ * Gateway ativo e ambiente definidos no armazenamento de configuração
  */
 const ACTIVE_GATEWAY = dynamic.gateway || 'syncpay';
 const ENVIRONMENT = dynamic.environment || 'production';

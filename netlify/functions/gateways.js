@@ -1,6 +1,6 @@
 const { successResponse, errorResponse, corsResponse, isOptionsRequest, parseBody } = require('./utils');
 const PaymentGateway = require('../../paymentGateway');
-const { getConfig } = require('../../loadConfig');
+const { getConfig, saveConfig } = require('../../loadConfig');
 
 exports.handler = async (event, context) => {
     // Tratar requisições CORS preflight
@@ -57,7 +57,11 @@ exports.handler = async (event, context) => {
                     }
 
                     paymentGateway.setGateway(gateway);
-                    
+
+                    const cfg = getConfig();
+                    cfg.gateway = gateway;
+                    saveConfig(cfg);
+
                     return successResponse({
                         message: `Gateway alterado para ${gateway}`,
                         current: paymentGateway.getCurrentGateway()
