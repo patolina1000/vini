@@ -5,7 +5,7 @@ const fetch = require('node-fetch');
 const { syncpayGet, syncpayPost } = require('./syncpayApi');
 const WebhookHandler = require('./webhookHandler');
 const PaymentGateway = require('./paymentGateway');
-const { getConfig } = require('./loadConfig');
+const { getConfig, saveConfig } = require('./loadConfig');
 
 // ============================
 // NOVO SISTEMA DE CONTROLLER
@@ -424,7 +424,11 @@ app.post('/api/gateways/switch', (req, res) => {
         }
 
         paymentGateway.setGateway(gateway);
-        
+
+        const cfg = getConfig();
+        cfg.gateway = gateway;
+        saveConfig(cfg);
+
         res.json({
             success: true,
             message: `Gateway alterado para ${gateway}`,
