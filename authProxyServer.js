@@ -17,7 +17,26 @@ app.post('/api/auth-token', async (req, res) => {
       body: JSON.stringify(req.body)
     });
 
-    const data = await response.json();
+    if (!response.ok) {
+      let errorData = {};
+      try {
+        errorData = await response.json();
+      } catch (e) {
+        // ignore json parse error
+      }
+      return res.status(response.status).json({
+        message: 'Falha ao autenticar com a API SyncPayments',
+        details: errorData
+      });
+    }
+
+    let data;
+    try {
+      data = await response.json();
+    } catch (err) {
+      console.error('[Auth Proxy] Erro ao interpretar resposta JSON:', err);
+      return res.status(500).json({ message: 'Resposta inválida da API SyncPayments' });
+    }
     res.status(response.status).json(data);
   } catch (error) {
     console.error('[Auth Proxy] Erro ao obter token:', error);

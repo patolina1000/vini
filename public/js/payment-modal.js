@@ -395,13 +395,23 @@ class PaymentModal {
         try {
             const response = await fetch(`/api/payments/${transactionId}/status`);
             if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
+                this.showToast('Erro ao consultar status do pagamento', 'error');
+                return null;
             }
-            const result = await response.json();
+
+            let result;
+            try {
+                result = await response.json();
+            } catch (err) {
+                console.error('Erro ao processar resposta de status:', err);
+                this.showToast('Resposta inválida do servidor', 'error');
+                return null;
+            }
             const data = result.data ? (result.data.data || result.data) : null;
             return data;
         } catch (error) {
             console.error('Erro ao consultar status da transação:', error);
+            this.showToast('Erro ao consultar status do pagamento', 'error');
             return null;
         }
     }

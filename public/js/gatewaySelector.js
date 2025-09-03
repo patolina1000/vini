@@ -14,12 +14,26 @@ class GatewaySelector {
     async loadCurrentGateway() {
         try {
             const response = await fetch('/api/gateways/current');
-            const data = await response.json();
+            if (!response.ok) {
+                this.showNotification('Não foi possível carregar o gateway atual', 'error');
+                return;
+            }
+
+            let data;
+            try {
+                data = await response.json();
+            } catch (err) {
+                console.error('Erro ao processar resposta do gateway atual:', err);
+                this.showNotification('Resposta inválida do servidor ao carregar gateway', 'error');
+                return;
+            }
+
             if (data.success) {
                 this.currentGateway = data.gateway;
             }
         } catch (error) {
             console.error('Erro ao carregar gateway atual:', error);
+            this.showNotification('Erro ao carregar gateway atual', 'error');
         }
     }
 
@@ -59,21 +73,33 @@ class GatewaySelector {
                 body: JSON.stringify({ gateway })
             });
 
-            const data = await response.json();
-            
+            if (!response.ok) {
+                this.showNotification('Erro ao alterar gateway', 'error');
+                return;
+            }
+
+            let data;
+            try {
+                data = await response.json();
+            } catch (err) {
+                console.error('Erro ao processar resposta de alteração de gateway:', err);
+                this.showNotification('Resposta inválida do servidor', 'error');
+                return;
+            }
+
             if (data.success) {
                 this.currentGateway = data.current;
                 this.updateUI();
                 this.showNotification(`Gateway alterado para ${gateway}`, 'success');
-                
+
                 // Disparar evento customizado para notificar outras partes do sistema
                 window.dispatchEvent(new CustomEvent('gateway-changed', {
-                    detail: { 
+                    detail: {
                         gateway: this.currentGateway,
-                        previous: gateway 
+                        previous: gateway
                     }
                 }));
-                
+
                 // Também atualizar a integração universal se disponível
                 if (window.universalPayment && typeof window.universalPayment.updateCurrentGateway === 'function') {
                     window.universalPayment.updateCurrentGateway(this.currentGateway);
@@ -107,12 +133,24 @@ class GatewaySelector {
                 body: JSON.stringify(testData)
             });
 
-            const data = await response.json();
-            
+            if (!response.ok) {
+                this.showNotification('Erro ao realizar teste de pagamento', 'error');
+                return;
+            }
+
+            let data;
+            try {
+                data = await response.json();
+            } catch (err) {
+                console.error('Erro ao processar resposta do teste:', err);
+                this.showNotification('Resposta inválida do servidor', 'error');
+                return;
+            }
+
             if (data.success) {
                 this.showNotification(`✅ Teste realizado com sucesso via ${this.currentGateway.toUpperCase()}!`, 'success');
                 console.log('✅ Resultado do teste:', data);
-                
+
                 // Mostrar detalhes do pagamento criado
                 if (data.data) {
                     console.log('💰 Detalhes do pagamento:', {
@@ -135,26 +173,38 @@ class GatewaySelector {
     async testGatewayConfiguration() {
         try {
             const response = await fetch('/api/gateways/test');
-            const data = await response.json();
-            
+            if (!response.ok) {
+                this.showNotification('Erro ao verificar configuração', 'error');
+                return;
+            }
+
+            let data;
+            try {
+                data = await response.json();
+            } catch (err) {
+                console.error('Erro ao processar resposta de configuração:', err);
+                this.showNotification('Resposta inválida do servidor', 'error');
+                return;
+            }
+
             if (data.success) {
                 console.log('🔧 Configuração dos gateways:', data);
-                
+
                 // Mostrar informações detalhadas
                 let configInfo = `📊 CONFIGURAÇÃO DOS GATEWAYS\n\n`;
                 configInfo += `Gateway Atual: ${data.current_gateway.toUpperCase()}\n\n`;
-                
+
                 data.gateways.forEach(gateway => {
                     configInfo += `${gateway.name}: ${gateway.status === 'active' ? '✅' : '⚠️'}\n`;
                     configInfo += `  Ambiente: ${gateway.environment}\n`;
                     configInfo += `  Token: ${gateway.token_status}\n\n`;
                 });
-                
+
                 configInfo += `VARIÁVEIS DE AMBIENTE:\n`;
                 Object.entries(data.environment_vars).forEach(([key, value]) => {
                     configInfo += `${key}: ${value}\n`;
                 });
-                
+
                 console.log(configInfo);
                 this.showNotification('Configuração verificada - veja o console para detalhes', 'info');
             } else {
@@ -187,8 +237,19 @@ class GatewaySelector {
     async updateGatewayInfo() {
         try {
             const response = await fetch('/api/gateways');
-            const data = await response.json();
-            
+            if (!response.ok) {
+                console.error('Erro ao carregar informações do gateway: resposta inválida');
+                return;
+            }
+
+            let data;
+            try {
+                data = await response.json();
+            } catch (err) {
+                console.error('Erro ao processar informações do gateway:', err);
+                return;
+            }
+
             if (data.success) {
                 const currentGatewayInfo = data.gateways.find(g => g.id === this.currentGateway);
                 const gatewayInfo = document.getElementById('gateway-info');
